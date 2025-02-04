@@ -1,4 +1,4 @@
-﻿namespace API_Teste.Dto.Locais.Vinculo
+﻿namespace API_Teste.Dto.Cidades.Vinculo
 {
     public class EstadoVinculo
     {

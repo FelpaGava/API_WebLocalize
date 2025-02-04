@@ -9,5 +9,7 @@ namespace API_Teste.Model
         public string Nome { get; set; } 
         public string Sigla { get; set; }
 
+        public ICollection<CidadesModel> Cidades { get; set; }
+
     }
 }

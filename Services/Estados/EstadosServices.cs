@@ -35,7 +35,7 @@ namespace API_Teste.Services.Estados
             }
         }
 
-        public async Task<ResponseModel <EstadosModel>> BuscarEstadoPorLocal(int idLocal)
+        public async Task<ResponseModel<EstadosModel>> BuscarEstadoPorLocal(int idLocal)
         {
             ResponseModel<EstadosModel> resposta = new ResponseModel<EstadosModel>();
 
@@ -51,7 +51,7 @@ namespace API_Teste.Services.Estados
                     return resposta;
                 }
 
-                resposta.Dados =  local.EstadoRelacao;
+                resposta.Dados = local.EstadoRelacao;
                 resposta.Mensagem = "Estado encontrado com sucesso";
                 return resposta;
 
@@ -63,6 +63,7 @@ namespace API_Teste.Services.Estados
                 return resposta;
             }
         }
+
 
         public async Task<ResponseModel<EstadosModel>> BuscarEstadoPorId(int idEstados)
         {

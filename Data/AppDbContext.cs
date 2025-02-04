@@ -8,6 +8,7 @@ namespace API_Teste.Data
 
         public DbSet<EstadosModel> Estados { get; set; }
         public DbSet<LocaisModel> Locais { get; set; }
+        public DbSet<CidadesModel> Cidades { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -51,10 +52,20 @@ namespace API_Teste.Data
 
             // Configuração da relação entre as tabelas
             modelBuilder.Entity<LocaisModel>()
-                .HasOne(l => l.EstadoRelacao) 
-                .WithMany() 
-                .HasForeignKey(l => l.EstadoID) 
-                .OnDelete(DeleteBehavior.Cascade); 
+                 .HasOne(l => l.EstadoRelacao)
+                 .WithMany()
+                 .HasForeignKey(l => l.EstadoID)
+                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CidadesModel>()
+                .HasOne(c => c.EstadoRelacao)
+                .WithMany(e => e.Cidades)  
+                .HasForeignKey(c => c.EstadoID);
+
+            modelBuilder.Entity<EstadosModel>()
+                .HasMany(e => e.Cidades) 
+                .WithOne(c => c.EstadoRelacao)  
+                .HasForeignKey(c => c.EstadoID);
         }
     }
 }

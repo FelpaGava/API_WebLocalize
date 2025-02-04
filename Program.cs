@@ -1,6 +1,7 @@
 using API_Teste.Data;
+using API_Teste.Services.Cidades;
 using API_Teste.Services.Estados;
-using API_Teste.Services.local;
+using API_Teste.Services.Local;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IEstadosInterface, EstadosServices>();
 builder.Services.AddScoped<ILocaisInterface, LocaisServices>();
+builder.Services.AddScoped<ICidadesInterface, CidadesServices>();
 
 builder.Services.AddDbContext<AppDbContext>(options => 
 { 

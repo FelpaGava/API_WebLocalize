@@ -1,95 +1,81 @@
-﻿using API_Teste.Dto.Locais;
-using API_Teste.Services.local;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using API_Teste.Services.Local;
+using API_Teste.Dto.Locais;
+using API_Teste.Model;
 
-namespace API_Teste.Controllers 
+namespace API_Teste.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class LocaisController : ControllerBase
     {
-        private readonly ILocaisInterface _locaisInterface; //Injeção de dependência
-        public LocaisController(ILocaisInterface locaisInterface)
+        private readonly ILocaisInterface _locaisService;
+
+        public LocaisController(ILocaisInterface locaisService)
         {
-            _locaisInterface = locaisInterface;
+            _locaisService = locaisService;
         }
 
         [HttpGet("ListarLocais")]
-        public async Task<IActionResult> ListarLocais()
+        public async Task<ActionResult<ResponseModel<List<LocaisModel>>>> ListarLocais()
         {
-            var resposta = await _locaisInterface.ListarLocais();
-            if (resposta.Status)
-            {
-                return Ok(resposta);
-            }
-            return BadRequest(resposta);
+            var resposta = await _locaisService.ListarLocais();
+            return Ok(resposta);
         }
 
-        [HttpGet("BuscarLocaisPorId")]
-        public async Task<IActionResult> BuscarLocaisPorId(int idLocais)
+        [HttpGet("BuscarLocalPorId/{idLocais}")]
+        public async Task<ActionResult<ResponseModel<LocaisModel>>> BuscarLocaisPorId(int idLocais)
         {
-            var resposta = await _locaisInterface.BuscarLocaisPorId(idLocais);
-            if (resposta.Status)
+            var resposta = await _locaisService.BuscarLocaisPorId(idLocais);
+            if (!resposta.Status)
             {
-                return Ok(resposta);
+                return NotFound(resposta);
             }
-            return BadRequest(resposta);
+            return Ok(resposta);
         }
 
-        [HttpGet("BuscarLocaisPorIdEstado")]
-        public async Task<IActionResult> BuscarLocaisPorIdEstado(int idEstados)
+        [HttpPost("CriarLocal")]
+        public async Task<ActionResult<ResponseModel<List<LocaisModel>>>> CriarLocais([FromBody] LocaisCriacaoDto locaisCriacaoDto)
         {
-            var resposta = await _locaisInterface.BuscarLocaisPorIdEstado(idEstados);
-            if (resposta.Status)
+            var resposta = await _locaisService.CriarLocais(locaisCriacaoDto);
+            if (!resposta.Status)
             {
-                return Ok(resposta);
+                return BadRequest(resposta);
             }
-            return BadRequest(resposta);
+            return Ok(resposta);
         }
 
-        [HttpPost("CriarLocais")]
-        public async Task<IActionResult> CriarLocais(LocaisCriacaoDto locaisCriacaoDto)
+        [HttpPut("EditarLocal")]
+        public async Task<ActionResult<ResponseModel<List<LocaisModel>>>> EditarLocais([FromBody] LocaisEdicaoDto locaisEdicaoDto)
         {
-            var resposta = await _locaisInterface.CriarLocais(locaisCriacaoDto);
-            if (resposta.Status)
+            var resposta = await _locaisService.EditarLocais(locaisEdicaoDto);
+            if (!resposta.Status)
             {
-                return Ok(resposta);
+                return BadRequest(resposta);
             }
-            return BadRequest(resposta);
+            return Ok(resposta);
         }
 
-        [HttpPut("EditarLocais")]
-        public async Task<IActionResult> EditarLocais(LocaisEdicaoDto locaisEdicaoDto)
+        [HttpDelete("DeletarLocal{idLocais}")]
+        public async Task<ActionResult<ResponseModel<List<LocaisModel>>>> ExcluirLocais(int idLocais)
         {
-            var resposta = await _locaisInterface.EditarLocais(locaisEdicaoDto);
-            if (resposta.Status)
+            var resposta = await _locaisService.ExcluirLocais(idLocais);
+            if (!resposta.Status)
             {
-                return Ok(resposta);
+                return BadRequest(resposta);
             }
-            return BadRequest(resposta);
+            return Ok(resposta);
         }
 
-        [HttpDelete("ExcluirLocais")]
-        public async Task<IActionResult> ExcluirLocais(int idLocais)
+        [HttpGet("BuscarPorTermo")]
+        public async Task<ActionResult<ResponseModel<List<LocaisModel>>>> BuscarPorNomeOuDescricao([FromQuery] string termo)
         {
-            var resposta = await _locaisInterface.ExcluirLocais(idLocais);
-            if (resposta.Status)
+            var resposta = await _locaisService.BuscarPorNomeOuDescricao(termo);
+            if (!resposta.Status)
             {
-                return Ok(resposta);
+                return NotFound(resposta);
             }
-            return BadRequest(resposta);
-        }
-
-        [HttpGet("BuscarPorNomeOuDescricao")]
-        public async Task<IActionResult> BuscarPorNomeOuDescricao(string termo)
-        {
-            var resposta = await _locaisInterface.BuscarPorNomeOuDescricao(termo);
-            if (resposta.Status)
-            {
-                return Ok(resposta);
-            }
-            return BadRequest(resposta);
+            return Ok(resposta);
         }
     }
 }
