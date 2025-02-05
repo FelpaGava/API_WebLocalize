@@ -15,15 +15,12 @@ public class LocaisModel
     [MaxLength(100)]
     public string Endereco { get; set; }
 
-    [Required]
-    public int CidadeID { get; set; }  
 
+    public int? CidadeID { get; set; }
     [JsonIgnore]
-    public CidadesModel CidadeRelacao { get; set; } 
-
-    [Required] 
+    public CidadesModel CidadeRelacao { get; set; }
+    
     public int EstadoID { get; set; } 
-
     [JsonIgnore]
     public EstadosModel EstadoRelacao { get; set; } 
 }

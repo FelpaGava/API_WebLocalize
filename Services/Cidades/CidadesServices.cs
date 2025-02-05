@@ -17,25 +17,18 @@ namespace API_Teste.Services.Cidades
         // Listar todas as cidades
         public async Task<ResponseModel<List<CidadesModel>>> ListarCidades()
         {
-            ResponseModel<List<CidadesModel>> resposta = new ResponseModel<List<CidadesModel>>();
-            try
-            {
-                var cidades = await _context.Cidades
-                    .Include(c => c.EstadoRelacao) // Inclui o estado relacionado
-                    .ToListAsync();
+            var cidades = await _context.Cidades
+                .Include(c => c.EstadoRelacao) // 🔹 Inclui o estado na consulta
+                .ToListAsync();
 
-                resposta.Dados = cidades;
-                resposta.Mensagem = "Cidades listadas com sucesso";
-
-                return resposta;
-            }
-            catch (Exception ex)
+            return new ResponseModel<List<CidadesModel>>
             {
-                resposta.Mensagem = ex.Message;
-                resposta.Status = false;
-                return resposta;
-            }
+                Status = true,
+                Dados = cidades,
+                Mensagem = "Cidades listadas com sucesso"
+            };
         }
+
 
         // Buscar cidade por ID
         public async Task<ResponseModel<CidadesModel>> BuscarCidadePorId(int idCidade)
@@ -86,11 +79,11 @@ namespace API_Teste.Services.Cidades
                 var cidade = new CidadesModel
                 {
                     Nome = cidadeCriacaoDto.Nome,
-                    EstadoID = cidadeCriacaoDto.EstadoID // Associa a cidade a um estado
+                    EstadoID = cidadeCriacaoDto.EstadoID
                 };
 
-                _context.Add(cidade);
-                await _context.SaveChangesAsync(); // Salvar a cidade
+                estado.Cidades.Add(cidade); // Adiciona a cidade ao estado
+                await _context.SaveChangesAsync();
 
                 resposta.Dados = await _context.Cidades.ToListAsync(); // Retornar a lista de cidades
                 resposta.Mensagem = "Cidade criada com sucesso";
@@ -100,7 +93,7 @@ namespace API_Teste.Services.Cidades
             }
             catch (Exception ex)
             {
-                resposta.Mensagem = ex.Message;
+                resposta.Mensagem = ex.InnerException?.Message ?? ex.Message;
                 resposta.Status = false;
                 return resposta;
             }

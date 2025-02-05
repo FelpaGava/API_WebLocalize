@@ -96,104 +96,107 @@ namespace API_Teste.Services.Local
         // Criar um novo local
         public async Task<ResponseModel<List<LocaisModel>>> CriarLocais(LocaisCriacaoDto locaisCriacaoDto)
         {
-            var resposta = new ResponseModel<List<LocaisModel>>();
+            ResponseModel<List<LocaisModel>> resposta = new ResponseModel<List<LocaisModel>>();
+
             try
             {
-                // Verifica se a cidade existe usando o ID fornecido no CidadeVinculo
-                var cidade = await _context.Cidades
-                    .FirstOrDefaultAsync(c => c.CidadeID == locaisCriacaoDto.CidadeID.CidadeID);  // Acessa o ID da cidade dentro do objeto CidadeVinculo
-
+                // Verificar se a cidade existe no banco
+                var cidade = await _context.Cidades.FindAsync(locaisCriacaoDto.CidadeID);
                 if (cidade == null)
                 {
-                    resposta.Mensagem = "Cidade não encontrada!";
+                    resposta.Mensagem = "Cidade não encontrada.";
                     resposta.Status = false;
                     return resposta;
                 }
 
-                // Cria o novo local
-                var local = new LocaisModel()
+                // Verificar se o estado existe no banco
+                var estado = await _context.Estados.FindAsync(locaisCriacaoDto.EstadoRelacao.EstadoID);
+                if (estado == null)
+                {
+                    resposta.Mensagem = "Estado não encontrado.";
+                    resposta.Status = false;
+                    return resposta;
+                }
+
+                var local = new LocaisModel
                 {
                     Nome = locaisCriacaoDto.Nome,
                     Descricao = locaisCriacaoDto.Descricao,
                     Endereco = locaisCriacaoDto.Endereco,
-                    CidadeID = locaisCriacaoDto.CidadeID.CidadeID,  // Atribui o ID da cidade
-                    EstadoID = cidade.EstadoID,  // Atribui o estado da cidade
+                    CidadeID = locaisCriacaoDto.CidadeID,
+                    EstadoID = locaisCriacaoDto.EstadoRelacao.EstadoID
                 };
 
-                // Adiciona o local ao banco de dados
-                _context.Locais.Add(local);
+                _context.Add(local);
                 await _context.SaveChangesAsync();
 
-                // Retorna a lista atualizada de locais
-                resposta.Dados = await _context.Locais
-                    .Include(l => l.CidadeRelacao)  // Inclui a cidade relacionada
-                    .Include(l => l.EstadoRelacao)  // Inclui o estado relacionado
-                    .ToListAsync();
+                resposta.Dados = await _context.Locais.ToListAsync();
+                resposta.Mensagem = "Local criado com sucesso";
 
-                resposta.Mensagem = "Ponto turístico criado com sucesso!";
                 return resposta;
             }
             catch (Exception ex)
             {
-                resposta.Mensagem = $"Erro ao criar local: {ex.Message}";
+                resposta.Mensagem = $"Erro ao criar local: {ex.Message}. {ex.InnerException?.Message}";
                 resposta.Status = false;
                 return resposta;
             }
         }
 
         // Editar um local existente
-        public async Task<ResponseModel<List<LocaisModel>>> EditarLocais(LocaisEdicaoDto locaisEdicaoDto)
+      public async Task<ResponseModel<List<LocaisModel>>> EditarLocais(LocaisEdicaoDto locaisEdicaoDto)
+{
+    var resposta = new ResponseModel<List<LocaisModel>>();
+    try
+    {
+        // Busca o local pelo ID
+        var local = await _context.Locais
+            .Include(l => l.CidadeRelacao)
+            .FirstOrDefaultAsync(l => l.Id == locaisEdicaoDto.Id);
+
+        if (local == null)
         {
-            var resposta = new ResponseModel<List<LocaisModel>>();
-            try
-            {
-                // Busca o local pelo ID
-                var local = await _context.Locais
-                    .Include(l => l.CidadeID)
-                    .FirstOrDefaultAsync(l => l.Id == locaisEdicaoDto.Id);
-
-                if (local == null)
-                {
-                    resposta.Mensagem = "Nenhum registro de ponto turístico encontrado!";
-                    resposta.Status = false;
-                    return resposta;
-                }
-
-                // Verifica se a nova cidade existe
-                var cidade = await _context.Cidades
-                    .FirstOrDefaultAsync(c => c.CidadeID == locaisEdicaoDto.Id);
-
-                if (cidade == null)
-                {
-                    resposta.Mensagem = "Cidade não encontrada!";
-                    resposta.Status = false;
-                    return resposta;
-                }
-
-                // Atualiza os campos do local
-                local.Nome = locaisEdicaoDto.Nome;
-                local.Descricao = locaisEdicaoDto.Descricao;
-                local.Endereco = locaisEdicaoDto.Endereco;
-                local.CidadeID = locaisEdicaoDto.Id; // Atualiza o ID da cidade
-
-                // Salva as alterações no banco de dados
-                _context.Locais.Update(local);
-                await _context.SaveChangesAsync();
-
-                // Retorna a lista atualizada de locais
-                resposta.Dados = await _context.Locais
-                    .Include(l => l.EstadoRelacao)
-                    .ToListAsync();
-                resposta.Mensagem = "Ponto turístico editado com sucesso!";
-                return resposta;
-            }
-            catch (Exception ex)
-            {
-                resposta.Mensagem = ex.Message;
-                resposta.Status = false;
-                return resposta;
-            }
+            resposta.Mensagem = "Nenhum registro de ponto turístico encontrado!";
+            resposta.Status = false;
+            return resposta;
         }
+
+        // Verifica se a nova cidade existe
+        var cidade = await _context.Cidades
+            .FirstOrDefaultAsync(c => c.CidadeID == locaisEdicaoDto.CidadeID.CidadeID); // 🔹 Correção aqui
+
+        if (cidade == null)
+        {
+            resposta.Mensagem = "Cidade não encontrada!";
+            resposta.Status = false;
+            return resposta;
+        }
+
+        // Atualiza os campos do local
+        local.Nome = locaisEdicaoDto.Nome;
+        local.Descricao = locaisEdicaoDto.Descricao;
+        local.Endereco = locaisEdicaoDto.Endereco;
+        local.CidadeID = locaisEdicaoDto.CidadeID.CidadeID; // 🔹 Correção aqui
+
+        // Salva as alterações no banco de dados
+        _context.Locais.Update(local);
+        await _context.SaveChangesAsync();
+
+        // Retorna a lista atualizada de locais
+        resposta.Dados = await _context.Locais
+            .Include(l => l.EstadoRelacao)
+            .ToListAsync();
+        resposta.Mensagem = "Ponto turístico editado com sucesso!";
+        return resposta;
+    }
+    catch (Exception ex)
+    {
+        resposta.Mensagem = ex.Message;
+        resposta.Status = false;
+        return resposta;
+    }
+}
+
 
         // Excluir um local
         public async Task<ResponseModel<List<LocaisModel>>> ExcluirLocais(int idLocais)
@@ -216,20 +219,25 @@ namespace API_Teste.Services.Local
                 _context.Locais.Remove(local);
                 await _context.SaveChangesAsync();
 
-                // Retorna a lista atualizada de locais
+                // Retorna a lista atualizada de locais com informações de cidade e estado
                 resposta.Dados = await _context.Locais
-                    .Include(l => l.Id)
+                    .Include(l => l.CidadeRelacao)  // 🔹 Inclui a cidade vinculada
+                    .ThenInclude(c => c.EstadoRelacao) // 🔹 Inclui o estado da cidade
+                    .AsNoTracking()
                     .ToListAsync();
+
                 resposta.Mensagem = "Ponto turístico excluído com sucesso!";
+                resposta.Status = true;
                 return resposta;
             }
             catch (Exception ex)
             {
-                resposta.Mensagem = ex.Message;
+                resposta.Mensagem = $"Erro ao excluir local: {ex.Message}";
                 resposta.Status = false;
                 return resposta;
             }
         }
+
 
         // Buscar locais por nome ou descrição
         public async Task<ResponseModel<List<LocaisModel>>> BuscarPorNomeOuDescricao(string termo)

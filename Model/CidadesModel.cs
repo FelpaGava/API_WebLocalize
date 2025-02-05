@@ -8,6 +8,7 @@ namespace API_Teste.Model
         [Key] 
         public int CidadeID { get; set; }
         public string Nome { get; set; }
+
         public int EstadoID { get; set; }
         [JsonIgnore]
         public EstadosModel EstadoRelacao { get; set; }

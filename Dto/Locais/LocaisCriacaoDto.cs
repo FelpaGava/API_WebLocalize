@@ -9,7 +9,7 @@ namespace API_Teste.Dto.Locais
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public string Endereco { get; set; }
-        public CidadeVinculo CidadeID { get; set; }
+        public int CidadeID { get; set; }
         public EstadoVinculo EstadoRelacao { get; set; }
     }
 }
