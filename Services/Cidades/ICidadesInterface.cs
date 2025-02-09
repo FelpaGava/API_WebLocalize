@@ -10,5 +10,6 @@ namespace API_Teste.Services.Cidades
         Task<ResponseModel<List<CidadesModel>>> CriarCidade(CidadesCriacaoDto cidadeCriacaoDto);
         Task<ResponseModel<List<CidadesModel>>> EditarCidade(CidadesEdicaoDto cidadeEdicaoDto);
         Task<ResponseModel<List<CidadesModel>>> ExcluirCidade(int idCidade);
+        Task<ResponseModel<CidadesModel>> BuscarCidadePorNome(string nomeCidade);
     }
 }

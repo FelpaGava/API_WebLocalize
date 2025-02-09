@@ -29,6 +29,34 @@ namespace API_Teste.Services.Cidades
             };
         }
 
+        // Buscar cidade por nome
+        public async Task<ResponseModel<CidadesModel>> BuscarCidadePorNome(string nomeCidade)
+        {
+            ResponseModel<CidadesModel> resposta = new ResponseModel<CidadesModel>();
+            try
+            {
+                var cidade = await _context.Cidades
+                    .Include(c => c.EstadoRelacao) // Inclui o estado relacionado
+                    .FirstOrDefaultAsync(c => c.Nome.ToLower() == nomeCidade.ToLower()); // Busca pelo nome da cidade
+
+                if (cidade == null)
+                {
+                    resposta.Mensagem = "Nenhum registro encontrado!";
+                    return resposta;
+                }
+
+                resposta.Dados = cidade;
+                resposta.Mensagem = "Cidade encontrada com sucesso";
+                return resposta;
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+        }
+
 
         // Buscar cidade por ID
         public async Task<ResponseModel<CidadesModel>> BuscarCidadePorId(int idCidade)

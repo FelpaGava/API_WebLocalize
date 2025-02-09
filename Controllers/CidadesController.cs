@@ -41,6 +41,18 @@ namespace API_Teste.Controllers
             return Ok(cidades);
         }
 
+        [HttpGet("BuscarCidadePorNome/{nomeCidade}")]
+        public async Task<IActionResult> BuscarCidadePorNome(string nomeCidade)
+        {
+            var resultado = await _cidadesService.BuscarCidadePorNome(nomeCidade);
+            if (resultado.Status == false)
+            {
+                return NotFound(resultado.Mensagem);
+            }
+            return Ok(resultado);
+        }
+
+
         // Endpoint para buscar uma cidade por ID
         [HttpGet("ListarCidadePorId{idCidade}")]
         public async Task<ActionResult<ResponseModel<CidadesModel>>> BuscarCidadePorId(int idCidade)
