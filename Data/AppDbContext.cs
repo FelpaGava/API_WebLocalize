@@ -113,11 +113,11 @@ namespace API_Teste.Data
 
             // Inserção de pontos turísticos
             modelBuilder.Entity<LocaisModel>().HasData(
-                new LocaisModel { Id = 1, Nome = "Basílica de São Bento", Descricao = "Igreja histórica com bela arquitetura", Endereco = "Praça Dr. Nemezio V. Souza, 50 - Centro, Marília - SP", CidadeID = 1, EstadoID = 25 },
-                new LocaisModel { Id = 2, Nome = "Bosque Municipal", Descricao = "Área verde para caminhadas e lazer", Endereco = "Av. República, 1500 - Bosque, Marília - SP", CidadeID = 1, EstadoID = 25 },
-                new LocaisModel { Id = 3, Nome = "Museu de Paleontologia", Descricao = "Museu com fósseis e exposições históricas", Endereco = "Rua São Paulo, 255 - Centro, Marília - SP", CidadeID = 1, EstadoID = 25 },
-                new LocaisModel { Id = 4, Nome = "Parque do Povo", Descricao = "Ótimo para caminhadas e lazer ao ar livre", Endereco = "Rua Comendador José G. dos Santos, s/n - Centro, Tupã - SP", CidadeID = 2, EstadoID = 25 },
-                new LocaisModel { Id = 5, Nome = "Museu Índia Vanuíre", Descricao = "Centro cultural com exposições sobre a história indígena", Endereco = "Rua Tupi, 1825 - Centro, Tupã - SP", CidadeID = 2, EstadoID = 25 },
+                new LocaisModel { Id = 1, Nome = "Basílica de São Bento", Descricao = "Igreja histórica com bela arquitetura", Endereco = "Praça Dr. Nemezio V. Souza, 50 - Centro, Marília - SP", CidadeID = 2, EstadoID = 25 },
+                new LocaisModel { Id = 2, Nome = "Bosque Municipal", Descricao = "Área verde para caminhadas e lazer", Endereco = "Av. República, 1500 - Bosque, Marília - SP", CidadeID = 2, EstadoID = 25 },
+                new LocaisModel { Id = 3, Nome = "Museu de Paleontologia", Descricao = "Museu com fósseis e exposições históricas", Endereco = "Rua São Paulo, 255 - Centro, Marília - SP", CidadeID = 2, EstadoID = 25 },
+                new LocaisModel { Id = 4, Nome = "Parque do Povo", Descricao = "Ótimo para caminhadas e lazer ao ar livre", Endereco = "Rua Comendador José G. dos Santos, s/n - Centro, Tupã - SP", CidadeID = 1, EstadoID = 25 },
+                new LocaisModel { Id = 5, Nome = "Museu Índia Vanuíre", Descricao = "Centro cultural com exposições sobre a história indígena", Endereco = "Rua Tupi, 1825 - Centro, Tupã - SP", CidadeID = 1, EstadoID = 25 },
 
                 new LocaisModel { Id = 6, Nome = "Pelourinho", Descricao = "Centro histórico de Salvador", Endereco = "Praça Terreiro de Jesus, s/n - Pelourinho, Salvador - BA", CidadeID = 16, EstadoID = 5 },
                 new LocaisModel { Id = 7, Nome = "Farol da Barra", Descricao = "Um dos cartões postais da Bahia", Endereco = "Avenida Oceanica, s/n - Barra, Salvador - BA", CidadeID = 16, EstadoID = 5 },

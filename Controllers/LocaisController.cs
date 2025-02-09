@@ -56,7 +56,7 @@ namespace API_Teste.Controllers
             return Ok(resposta);
         }
 
-        [HttpDelete("DeletarLocal{idLocais}")]
+        [HttpDelete("DeletarLocal/{idLocais}")]
         public async Task<ActionResult<ResponseModel<List<LocaisModel>>>> ExcluirLocais(int idLocais)
         {
             var resposta = await _locaisService.ExcluirLocais(idLocais);
@@ -68,14 +68,16 @@ namespace API_Teste.Controllers
         }
 
         [HttpGet("BuscarPorTermo")]
-        public async Task<ActionResult<ResponseModel<List<LocaisModel>>>> BuscarPorNomeOuDescricao([FromQuery] string termo)
+        public async Task<IActionResult> BuscarPorTermo(string termo)
         {
-            var resposta = await _locaisService.BuscarPorNomeOuDescricao(termo);
-            if (!resposta.Status)
+            var resultado = await _locaisService.BuscarPorNomeOuDescricao(termo);
+
+            if (!resultado.Status)
             {
-                return NotFound(resposta);
+                return NotFound(resultado);
             }
-            return Ok(resposta);
+
+            return Ok(resultado);
         }
     }
 }

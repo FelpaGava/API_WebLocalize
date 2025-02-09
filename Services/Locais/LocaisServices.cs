@@ -252,10 +252,12 @@ namespace API_Teste.Services.Local
                     return resposta;
                 }
 
-                // Busca locais que contenham o termo no nome ou na descrição
+                // Busca locais que contenham o termo no Nome, Descrição ou Cidade
                 var locais = await _context.Locais
+                    .Include(l => l.CidadeRelacao) // Inclui a relação com Cidade
                     .Where(l => EF.Functions.Like(l.Nome, $"%{termo}%") ||
-                                EF.Functions.Like(l.Descricao, $"%{termo}%"))
+                                EF.Functions.Like(l.Descricao, $"%{termo}%") ||
+                                (l.CidadeRelacao != null && EF.Functions.Like(l.CidadeRelacao.Nome, $"%{termo}%")))
                     .ToListAsync();
 
                 if (locais == null || !locais.Any())
@@ -267,11 +269,12 @@ namespace API_Teste.Services.Local
 
                 resposta.Dados = locais;
                 resposta.Mensagem = "Pontos turísticos encontrados com sucesso!";
+                resposta.Status = true; // Adicionando o status true quando encontrar dados
                 return resposta;
             }
             catch (Exception ex)
             {
-                resposta.Mensagem = ex.Message;
+                resposta.Mensagem = $"Erro ao buscar locais: {ex.Message}";
                 resposta.Status = false;
                 return resposta;
             }
