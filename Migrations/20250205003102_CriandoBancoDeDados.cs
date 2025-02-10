@@ -2,14 +2,14 @@
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+#pragma warning disable CA1814
 
 namespace API_Teste.Migrations
 {
-    /// <inheritdoc />
+  
     public partial class CriandoBancoDeDados : Migration
     {
-        /// <inheritdoc />
+      
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -201,7 +201,7 @@ namespace API_Teste.Migrations
                 column: "EstadoID");
         }
 
-        /// <inheritdoc />
+     
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

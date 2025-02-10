@@ -60,7 +60,7 @@ Após a criação da migração, execute o comando abaixo para aplicar as altera
 
 1. No **Visual Studio**, compile a solução.
 2. Execute o projeto utilizando o comando `F5` ou clicando em **Iniciar**.
-3. A API estará disponível no endereço padrão (geralmente `https://localhost:5001` ou `http://localhost:5000`).
+3. A API estará disponível no endereço padrão (geralmente `https://localhost:5019` ou `http://localhost:5018`).
 
 ---
 

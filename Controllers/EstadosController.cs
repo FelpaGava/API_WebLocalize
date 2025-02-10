@@ -11,7 +11,7 @@ namespace API_Teste.Controllers
     [ApiController]
     public class EstadosController : ControllerBase
     {
-        private readonly IEstadosInterface _estadosInterface; // Injeções de dependência
+        private readonly IEstadosInterface _estadosInterface; 
 
         public EstadosController(IEstadosInterface estadosInterface)
         {

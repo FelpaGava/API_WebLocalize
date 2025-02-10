@@ -19,7 +19,7 @@ namespace API_Teste.Data
             modelBuilder.Entity<EstadosModel>()
                 .HasKey(e => e.EstadoID);
 
-            // Inserção dos dados da tabela Estados
+           
             modelBuilder.Entity<EstadosModel>().HasData(
                 new EstadosModel { EstadoID = 1, Nome = "Acre", Sigla = "AC" },
                 new EstadosModel { EstadoID = 2, Nome = "Alagoas", Sigla = "AL" },
@@ -50,7 +50,7 @@ namespace API_Teste.Data
                 new EstadosModel { EstadoID = 27, Nome = "Tocantins", Sigla = "TO" }
             );
 
-            // Inserção de cidades
+     
             modelBuilder.Entity<CidadesModel>().HasData(
                 new CidadesModel { CidadeID = 1, Nome = "Tupã", EstadoID = 25 },
                 new CidadesModel { CidadeID = 2, Nome = "Marília", EstadoID = 25 },
@@ -111,7 +111,7 @@ namespace API_Teste.Data
                 new CidadesModel { CidadeID = 45, Nome = "Petrolina", EstadoID = 17 }
             );
 
-            // Inserção de pontos turísticos
+      
             modelBuilder.Entity<LocaisModel>().HasData(
                 new LocaisModel { Id = 1, Nome = "Basílica de São Bento", Descricao = "Igreja histórica com bela arquitetura", Endereco = "Praça Dr. Nemezio V. Souza, 50 - Centro, Marília - SP", CidadeID = 2, EstadoID = 25 },
                 new LocaisModel { Id = 2, Nome = "Bosque Municipal", Descricao = "Área verde para caminhadas e lazer", Endereco = "Av. República, 1500 - Bosque, Marília - SP", CidadeID = 2, EstadoID = 25 },

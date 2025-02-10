@@ -1,6 +1,5 @@
 ﻿namespace API_Teste.Model
 {
-    //modelo de resposta padrão
     public class ResponseModel<T>
     {
         public T? Dados { get; set; }

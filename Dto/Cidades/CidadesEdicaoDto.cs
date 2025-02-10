@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string Nome { get; set; }
-        public int EstadoID { get; set; } // Relacionamento com a tabela Estado
+        public int EstadoID { get; set; } 
     }
 }

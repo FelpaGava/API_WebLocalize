@@ -14,14 +14,13 @@ namespace API_Teste.Services.Local
             _context = context;
         }
 
-        // Listar todos os locais
         public async Task<ResponseModel<List<LocaisModel>>> ListarLocais()
         {
             var resposta = new ResponseModel<List<LocaisModel>>();
             try
             {
                 var locais = await _context.Locais
-                    .Include(l => l.EstadoRelacao) // Inclui a cidade relacionada
+                    .Include(l => l.EstadoRelacao) 
                     .ToListAsync();
 
                 resposta.Dados = locais;
@@ -36,14 +35,14 @@ namespace API_Teste.Services.Local
             }
         }
 
-        // Buscar local por ID
+        
         public async Task<ResponseModel<LocaisModel>> BuscarLocaisPorId(int idLocais)
         {
             var resposta = new ResponseModel<LocaisModel>();
             try
             {
                 var local = await _context.Locais
-                    .Include(l => l.EstadoRelacao) // Inclui a cidade relacionada
+                    .Include(l => l.EstadoRelacao) 
                     .FirstOrDefaultAsync(l => l.Id == idLocais);
 
                 if (local == null)
@@ -64,14 +63,14 @@ namespace API_Teste.Services.Local
             }
         }
 
-        // Buscar locais por ID da cidade
+        
         public async Task<ResponseModel<List<LocaisModel>>> BuscarLocaisPorIdCidade(int idCidade)
         {
             var resposta = new ResponseModel<List<LocaisModel>>();
             try
             {
                 var locais = await _context.Locais
-                    .Include(l => l.EstadoRelacao) // Inclui a cidade relacionada
+                    .Include(l => l.EstadoRelacao) 
                     .Where(l => l.CidadeID == idCidade)
                     .ToListAsync();
 
@@ -93,7 +92,7 @@ namespace API_Teste.Services.Local
             }
         }
 
-        // Criar um novo local
+        
         public async Task<ResponseModel<List<LocaisModel>>> CriarLocais(LocaisCriacaoDto locaisCriacaoDto)
         {
             ResponseModel<List<LocaisModel>> resposta = new ResponseModel<List<LocaisModel>>();
@@ -143,7 +142,7 @@ namespace API_Teste.Services.Local
             }
         }
 
-        // Editar um local existente
+       
       public async Task<ResponseModel<List<LocaisModel>>> EditarLocais(LocaisEdicaoDto locaisEdicaoDto)
 {
     var resposta = new ResponseModel<List<LocaisModel>>();
@@ -198,13 +197,13 @@ namespace API_Teste.Services.Local
 }
 
 
-        // Excluir um local
+       
         public async Task<ResponseModel<List<LocaisModel>>> ExcluirLocais(int idLocais)
         {
             var resposta = new ResponseModel<List<LocaisModel>>();
             try
             {
-                // Busca o local pelo ID
+               
                 var local = await _context.Locais
                     .FirstOrDefaultAsync(l => l.Id == idLocais);
 
@@ -215,14 +214,14 @@ namespace API_Teste.Services.Local
                     return resposta;
                 }
 
-                // Remove o local do banco de dados
+               
                 _context.Locais.Remove(local);
                 await _context.SaveChangesAsync();
 
-                // Retorna a lista atualizada de locais com informações de cidade e estado
+                
                 resposta.Dados = await _context.Locais
-                    .Include(l => l.CidadeRelacao)  // 🔹 Inclui a cidade vinculada
-                    .ThenInclude(c => c.EstadoRelacao) // 🔹 Inclui o estado da cidade
+                    .Include(l => l.CidadeRelacao) 
+                    .ThenInclude(c => c.EstadoRelacao) 
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -239,7 +238,7 @@ namespace API_Teste.Services.Local
         }
 
 
-        // Buscar locais por nome ou descrição
+        
         public async Task<ResponseModel<List<LocaisModel>>> BuscarPorNomeOuDescricao(string termo)
         {
             var resposta = new ResponseModel<List<LocaisModel>>();
@@ -252,9 +251,9 @@ namespace API_Teste.Services.Local
                     return resposta;
                 }
 
-                // Busca locais que contenham o termo no Nome, Descrição ou Cidade
+               
                 var locais = await _context.Locais
-                    .Include(l => l.CidadeRelacao) // Inclui a relação com Cidade
+                    .Include(l => l.CidadeRelacao) 
                     .Where(l => EF.Functions.Like(l.Nome, $"%{termo}%") ||
                                 EF.Functions.Like(l.Descricao, $"%{termo}%") ||
                                 (l.CidadeRelacao != null && EF.Functions.Like(l.CidadeRelacao.Nome, $"%{termo}%")))
@@ -269,7 +268,7 @@ namespace API_Teste.Services.Local
 
                 resposta.Dados = locais;
                 resposta.Mensagem = "Pontos turísticos encontrados com sucesso!";
-                resposta.Status = true; // Adicionando o status true quando encontrar dados
+                resposta.Status = true; 
                 return resposta;
             }
             catch (Exception ex)

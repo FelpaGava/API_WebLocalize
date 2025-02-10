@@ -1,5 +1,5 @@
 ﻿using API_Teste.Data;
-using API_Teste.Dto.Cidades; // Você precisará criar DTOs para Cidades
+using API_Teste.Dto.Cidades; 
 using API_Teste.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +14,11 @@ namespace API_Teste.Services.Cidades
             _context = context;
         }
 
-        // Listar todas as cidades
+        
         public async Task<ResponseModel<List<CidadesModel>>> ListarCidades()
         {
             var cidades = await _context.Cidades
-                .Include(c => c.EstadoRelacao) // 🔹 Inclui o estado na consulta
+                .Include(c => c.EstadoRelacao) 
                 .ToListAsync();
 
             return new ResponseModel<List<CidadesModel>>
@@ -29,15 +29,15 @@ namespace API_Teste.Services.Cidades
             };
         }
 
-        // Buscar cidade por nome
+       
         public async Task<ResponseModel<CidadesModel>> BuscarCidadePorNome(string nomeCidade)
         {
             ResponseModel<CidadesModel> resposta = new ResponseModel<CidadesModel>();
             try
             {
                 var cidade = await _context.Cidades
-                    .Include(c => c.EstadoRelacao) // Inclui o estado relacionado
-                    .FirstOrDefaultAsync(c => c.Nome.ToLower() == nomeCidade.ToLower()); // Busca pelo nome da cidade
+                    .Include(c => c.EstadoRelacao) 
+                    .FirstOrDefaultAsync(c => c.Nome.ToLower() == nomeCidade.ToLower());
 
                 if (cidade == null)
                 {
@@ -58,14 +58,14 @@ namespace API_Teste.Services.Cidades
         }
 
 
-        // Buscar cidade por ID
+     
         public async Task<ResponseModel<CidadesModel>> BuscarCidadePorId(int idCidade)
         {
             ResponseModel<CidadesModel> resposta = new ResponseModel<CidadesModel>();
             try
             {
                 var cidade = await _context.Cidades
-                    .Include(c => c.EstadoRelacao) // Inclui o estado relacionado
+                    .Include(c => c.EstadoRelacao) 
                     .FirstOrDefaultAsync(c => c.CidadeID == idCidade);
 
                 if (cidade == null)
@@ -86,14 +86,14 @@ namespace API_Teste.Services.Cidades
             }
         }
 
-        // Criar uma nova cidade
+    
         public async Task<ResponseModel<List<CidadesModel>>> CriarCidade(CidadesCriacaoDto cidadeCriacaoDto)
         {
             ResponseModel<List<CidadesModel>> resposta = new ResponseModel<List<CidadesModel>>();
 
             try
             {
-                // Verificar se o estado existe
+               
                 var estado = await _context.Estados.FindAsync(cidadeCriacaoDto.EstadoID);
                 
                 if (estado == null)
@@ -103,17 +103,17 @@ namespace API_Teste.Services.Cidades
                     return resposta;
                 }
 
-                // Criar a cidade e associá-la ao estado
+                
                 var cidade = new CidadesModel
                 {
                     Nome = cidadeCriacaoDto.Nome,
                     EstadoID = cidadeCriacaoDto.EstadoID
                 };
 
-                estado.Cidades.Add(cidade); // Adiciona a cidade ao estado
+                estado.Cidades.Add(cidade); 
                 await _context.SaveChangesAsync();
 
-                resposta.Dados = await _context.Cidades.ToListAsync(); // Retornar a lista de cidades
+                resposta.Dados = await _context.Cidades.ToListAsync(); 
                 resposta.Mensagem = "Cidade criada com sucesso";
                 resposta.Status = true;
 
@@ -128,7 +128,7 @@ namespace API_Teste.Services.Cidades
         }
 
 
-        // Editar uma cidade existente
+       
         public async Task<ResponseModel<List<CidadesModel>>> EditarCidade(CidadesEdicaoDto cidadeEdicaoDto)
         {
             ResponseModel<List<CidadesModel>> resposta = new ResponseModel<List<CidadesModel>>();
@@ -162,7 +162,7 @@ namespace API_Teste.Services.Cidades
             }
         }
 
-        // Excluir uma cidade
+       
         public async Task<ResponseModel<List<CidadesModel>>> ExcluirCidade(int idCidade)
         {
             ResponseModel<List<CidadesModel>> resposta = new ResponseModel<List<CidadesModel>>();

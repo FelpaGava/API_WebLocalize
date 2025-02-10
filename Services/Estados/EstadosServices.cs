@@ -70,7 +70,7 @@ namespace API_Teste.Services.Estados
             ResponseModel<EstadosModel> resposta = new ResponseModel<EstadosModel>();
             try
             {
-                //Verificar se o autor existe no banco de dados
+               
                 var estado = await _context.Estados
                     .FirstOrDefaultAsync(estadoBanco => estadoBanco.EstadoID == idEstados);
 
